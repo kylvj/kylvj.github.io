@@ -25,10 +25,18 @@
             justify-content: center;
             align-items: center;
             font-size: 20px;
+            color: #ccc;
         }
         #loading-text {
             font-family: monospace;
-            color: #bbb;
+            background: linear-gradient(to right, white, gray, black);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        #loading-subtext {
+            font-family: monospace;
+            color: #888;
+            margin-top: 5px;
         }
         #main-content {
             display: none;
@@ -37,7 +45,9 @@
         .glitch-text {
             font-size: 20px;
             font-weight: bold;
-            color: #ff00ff;
+            background: linear-gradient(to left, white, gray, black);
+            -webkit-background-clip: text;
+            color: transparent;
             text-shadow: 2px 2px 10px rgba(255, 0, 255, 0.7);
             animation: glitch 1s infinite;
         }
@@ -46,12 +56,27 @@
             50% { text-shadow: -2px -2px 10px rgba(0, 255, 255, 0.7); }
             100% { text-shadow: 2px 2px 10px rgba(255, 0, 255, 0.7); }
         }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background: linear-gradient(to right, white, gray);
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        button:hover {
+            background: linear-gradient(to right, gray, white);
+            color: white;
+        }
     </style>
 </head>
 <body>
     <div id="loading-screen">
         <img src="./logo.png" alt="Logo" id="logo" onerror="this.style.display='none'">
         <p id="loading-text">[..........] 1%</p>
+        <p id="loading-subtext">Loading /hi.js...</p>
     </div>
     
     <div id="main-content">
@@ -74,11 +99,14 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             let loadingText = document.getElementById("loading-text");
+            let loadingSubtext = document.getElementById("loading-subtext");
             let percentage = 1;
+            let scripts = ["/random_script.js", "/data_loader.js", "/config_fetcher.js", "/api_handler.js", "/main_engine.js", "/user_auth.js", "/graphics_loader.js"];
             let interval = setInterval(() => {
                 percentage += 1;
                 let bars = "#".repeat(Math.floor(percentage / 10)) + ".".repeat(10 - Math.floor(percentage / 10));
                 loadingText.textContent = `[${bars}] ${percentage}%`;
+                loadingSubtext.textContent = `Loading ${scripts[Math.floor(Math.random() * scripts.length)]}...`;
                 if (percentage >= 100) {
                     clearInterval(interval);
                     document.getElementById("loading-screen").style.display = "none";
@@ -90,59 +118,9 @@
             }, 75);
         });
 
-        function fetchLatestProject() {
-            fetch('https://api.github.com/users/kylvj/repos?sort=updated')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.length > 0) {
-                        let latestRepo = data[0];
-                        document.getElementById("current-project").innerHTML = `Current project: <a href="${latestRepo.html_url}" target="_blank">${latestRepo.name} - ${latestRepo.description || "No Description"}</a>`;
-                    } else {
-                        document.getElementById("current-project").textContent = "No projects found.";
-                    }
-                })
-                .catch(() => {
-                    document.getElementById("current-project").textContent = "Error fetching project.";
-                });
-        }
-
-        function displayTimeBasedGreeting() {
-            let helloText = document.getElementById("hello-text");
-            let hour = new Date().getHours();
-            let greetings = {
-                morning: {de: "Guten Morgen", jp: "おはよう", id: "Selamat Pagi", en: "Good Morning", tl: "Magandang Umaga"},
-                afternoon: {de: "Guten Tag", jp: "こんにちは", id: "Selamat Siang", en: "Good Afternoon", tl: "Magandang Hapon"},
-                evening: {de: "Guten Abend", jp: "こんばんは", id: "Selamat Malam", en: "Good Evening", tl: "Magandang Gabi"}
-            };
-            let timeOfDay = hour < 12 ? "morning" : hour < 18 ? "afternoon" : "evening";
-            let words = Object.values(greetings[timeOfDay]);
-            let index = 0;
-            setInterval(() => {
-                helloText.style.opacity = 0;
-                setTimeout(() => {
-                    helloText.textContent = words[index];
-                    helloText.style.opacity = 1;
-                    index = (index + 1) % words.length;
-                }, 500);
-            }, 2000);
-        }
-
-        function displayUserTimezone() {
-            let timezoneDisplay = document.getElementById("timezone-display");
-            let now = new Date();
-            let offset = now.getTimezoneOffset() / -60;
-            let formattedOffset = `GMT ${offset >= 0 ? "+" : ""}${offset}`;
-            let formattedTime = now.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
-            timezoneDisplay.textContent = `${formattedOffset} [${formattedTime}]`;
-        }
-
-        function toggleSound() {
-            let audio = document.getElementById("bg-music");
-            if (audio.paused) {
-                audio.play();
-            } else {
-                audio.pause();
-            }
+        function setTheme(mode) {
+            document.body.classList.remove("light", "dark", "carbon");
+            document.body.classList.add(mode);
         }
     </script>
 
