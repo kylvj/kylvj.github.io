@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
+    <title>hello a hi erm no</title>
     <link rel="stylesheet" href="styles.css">
     <script defer src="script.js"></script>
     <style>
@@ -58,16 +58,38 @@
         }
         button {
             padding: 10px 20px;
-            margin: 5px;
+            margin: 10px;
             border: none;
             border-radius: 5px;
             background: linear-gradient(to right, white, gray);
             color: black;
             font-weight: bold;
             cursor: pointer;
+            transition: all 0.3s ease-in-out;
         }
         button:hover {
             background: linear-gradient(to right, gray, white);
+            color: white;
+        }
+        .gradient-button {
+            background: linear-gradient(to right, gray, white);
+            color: white;
+        }
+        .gradient-button:hover {
+            background: linear-gradient(to right, white, gray);
+            color: black;
+        }
+        .light {
+            background-color: white;
+            color: black;
+        }
+        .dark {
+            background-color: #121212;
+            color: white;
+        }
+        .carbon {
+            background: url('carbon-fiber.png');
+            background-size: cover;
             color: white;
         }
     </style>
@@ -76,7 +98,7 @@
     <div id="loading-screen">
         <img src="./logo.png" alt="Logo" id="logo" onerror="this.style.display='none'">
         <p id="loading-text">[..........] 1%</p>
-        <p id="loading-subtext">Loading /hi.js...</p>
+        <p id="loading-subtext">Loading /random_script.js...</p>
     </div>
     
     <div id="main-content">
@@ -86,13 +108,13 @@
         <h2>Welcome to my Portfolio</h2>
         <p id="current-project" class="glitch-text">Fetching current project...</p>
         
-        <button onclick="toggleSound()">Play/Stop Sound</button>
-        <button onclick="window.open('https://roblox.com')">Roblox</button>
-        <button onclick="window.open('https://discord.com')">Discord Server</button>
+        <button class="gradient-button" onclick="toggleSound()">Play/Stop Sound</button>
+        <button class="gradient-button" onclick="window.open('https://roblox.com')">Roblox</button>
+        <button class="gradient-button" onclick="window.open('https://discord.com')">Discord Server</button>
         <div id="theme-switcher">
-            <button onclick="setTheme('light')">Light Mode</button>
-            <button onclick="setTheme('dark')">Dark Mode</button>
-            <button onclick="setTheme('carbon')">Carbon Mode</button>
+            <button class="gradient-button" onclick="setTheme('light')">Light Mode</button>
+            <button class="gradient-button" onclick="setTheme('dark')">Dark Mode</button>
+            <button class="gradient-button" onclick="setTheme('carbon')">Carbon Mode</button>
         </div>
     </div>
 
@@ -101,7 +123,9 @@
             let loadingText = document.getElementById("loading-text");
             let loadingSubtext = document.getElementById("loading-subtext");
             let percentage = 1;
-            let scripts = ["/random_script.js", "/data_loader.js", "/config_fetcher.js", "/api_handler.js", "/main_engine.js", "/user_auth.js", "/graphics_loader.js"];
+            let scripts = [
+                "/random_script.js", "/data_loader.js", "/config_fetcher.js", "/api_handler.js", "/main_engine.js", "/user_auth.js", "/graphics_loader.js", "/network_request.js", "/ai_module.js"
+            ];
             let interval = setInterval(() => {
                 percentage += 1;
                 let bars = "#".repeat(Math.floor(percentage / 10)) + ".".repeat(10 - Math.floor(percentage / 10));
