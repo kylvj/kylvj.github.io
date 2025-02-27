@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>i guess this is a title lol</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <div id="loading-screen">
+        <img src="logo.png" alt="Logo" id="logo">
+        <p id="loading-text">[#..........] 1%</p>
+    </div>
+    
+    <div id="main-content" style="display: none;">
+        <h1 id="hello-text">Hello</h1>
+        <p id="timezone-display"></p>
+        
+        <h2>Hi and Welcome to my Portfolio!</h2>
+        <p id="current-project" class="glitch-text">Fetching current project...</p>
+        
+        <button onclick="toggleSound()">Play/Stop Sound</button>
+        <button onclick="window.open('https://roblox.com')">Roblox</button>
+        <button onclick="window.open('https://discord.com')">Discord Server</button>
+        <div id="theme-switcher">
+            <button onclick="setTheme('light')">Light Mode</button>
+            <button onclick="setTheme('dark')">Dark Mode</button>
+            <button onclick="setTheme('carbon')">Carbon Mode</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let loadingText = document.getElementById("loading-text");
+            let percentage = 1;
+            let interval = setInterval(() => {
+                percentage += 1;
+                let bars = "#".repeat(percentage / 10) + ".".repeat(10 - percentage / 10);
+                loadingText.textContent = `[${bars}] ${percentage}%`;
+                if (percentage >= 100) {
+                    clearInterval(interval);
+                    document.getElementById("loading-screen").style.display = "none";
+                    document.getElementById("main-content").style.display = "block";
+                    displayTimeBasedGreeting();
+                    displayUserTimezone();
+                    fetchLatestProject();
+                }
+            }, 75);
+        });
+
+        function fetchLatestProject() {
+            fetch('https://api.github.com/users/yourgithub/repos?sort=updated')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        let latestRepo = data[0];
+                        document.getElementById("current-project").innerHTML = `Current project: <a href="${latestRepo.html_url}" target="_blank">${latestRepo.name} - ${latestRepo.description || "No Description"}</a>`;
+                    } else {
+                        document.getElementById("current-project").textContent = "No projects found.";
+                    }
+                })
+                .catch(() => {
+                    document.getElementById("current-project").textContent = "Error fetching project.";
+                });
+        }
+
+        function displayTimeBasedGreeting() {
+            let helloText = document.getElementById("hello-text");
+            let hour = new Date().getHours();
+            let greetings = {
+                morning: {de: "Guten Morgen", jp: "おはよう", id: "Selamat Pagi", en: "Good Morning", tl: "Magandang Umaga"},
+                afternoon: {de: "Guten Tag", jp: "こんにちは", id: "Selamat Siang", en: "Good Afternoon", tl: "Magandang Hapon"},
+                evening: {de: "Guten Abend", jp: "こんばんは", id: "Selamat Malam", en: "Good Evening", tl: "Magandang Gabi"}
+            };
+            let timeOfDay = hour < 12 ? "morning" : hour < 18 ? "afternoon" : "evening";
+            let languages = greetings[timeOfDay];
+            let words = Object.values(languages);
+            let index = 0;
+            setInterval(() => {
+                helloText.style.opacity = 0;
+                setTimeout(() => {
+                    helloText.textContent = words[index];
+                    helloText.style.opacity = 1;
+                    index = (index + 1) % words.length;
+                }, 500);
+            }, 2000);
+        }
+
+        function displayUserTimezone() {
+            let timezoneDisplay = document.getElementById("timezone-display");
+            let now = new Date();
+            let offset = now.getTimezoneOffset() / -60;
+            let formattedOffset = `GMT ${offset >= 0 ? "+" : ""}${offset}`;
+            let formattedTime = now.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+            timezoneDisplay.textContent = `${formattedOffset} [${formattedTime}]`;
+        }
+
+        function toggleSound() {
+            let audio = document.getElementById("bg-music");
+            if (audio.paused) {
+                audio.play();
+            } else {
+                audio.pause();
+            }
+        }
+
+        function setTheme(mode) {
+            document.body.className = mode;
+        }
+    </script>
+
+    <audio id="bg-music" src="https://drive.google.com/file/d/1_NUwJtYbAU8pLbhaqZ0jSX_Oxilqy2na/view?usp=sharing" loop></audio>
+</body>
+</html>
