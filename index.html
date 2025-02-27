@@ -3,21 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>i guess this is a title lol</title>
+    <title>My Portfolio</title>
     <link rel="stylesheet" href="styles.css">
     <script defer src="script.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #121212;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        #loading-screen {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: black;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+        }
+        #loading-text {
+            font-family: monospace;
+            color: #bbb;
+        }
+        #main-content {
+            display: none;
+            margin-top: 50px;
+        }
+        .glitch-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff00ff;
+            text-shadow: 2px 2px 10px rgba(255, 0, 255, 0.7);
+            animation: glitch 1s infinite;
+        }
+        @keyframes glitch {
+            0% { text-shadow: 2px 2px 10px rgba(255, 0, 255, 0.7); }
+            50% { text-shadow: -2px -2px 10px rgba(0, 255, 255, 0.7); }
+            100% { text-shadow: 2px 2px 10px rgba(255, 0, 255, 0.7); }
+        }
+    </style>
 </head>
 <body>
     <div id="loading-screen">
-        <img src="logo.png" alt="Logo" id="logo">
-        <p id="loading-text">[#..........] 1%</p>
+        <img src="./logo.png" alt="Logo" id="logo" onerror="this.style.display='none'">
+        <p id="loading-text">[..........] 1%</p>
     </div>
     
-    <div id="main-content" style="display: none;">
+    <div id="main-content">
         <h1 id="hello-text">Hello</h1>
         <p id="timezone-display"></p>
         
-        <h2>Hi and Welcome to my Portfolio!</h2>
+        <h2>Welcome to my Portfolio</h2>
         <p id="current-project" class="glitch-text">Fetching current project...</p>
         
         <button onclick="toggleSound()">Play/Stop Sound</button>
@@ -36,7 +77,7 @@
             let percentage = 1;
             let interval = setInterval(() => {
                 percentage += 1;
-                let bars = "#".repeat(percentage / 10) + ".".repeat(10 - percentage / 10);
+                let bars = "#".repeat(Math.floor(percentage / 10)) + ".".repeat(10 - Math.floor(percentage / 10));
                 loadingText.textContent = `[${bars}] ${percentage}%`;
                 if (percentage >= 100) {
                     clearInterval(interval);
@@ -50,7 +91,7 @@
         });
 
         function fetchLatestProject() {
-            fetch('https://api.github.com/users/yourgithub/repos?sort=updated')
+            fetch('https://api.github.com/users/kylvj/repos?sort=updated')
                 .then(response => response.json())
                 .then(data => {
                     if (data.length > 0) {
@@ -74,8 +115,7 @@
                 evening: {de: "Guten Abend", jp: "こんばんは", id: "Selamat Malam", en: "Good Evening", tl: "Magandang Gabi"}
             };
             let timeOfDay = hour < 12 ? "morning" : hour < 18 ? "afternoon" : "evening";
-            let languages = greetings[timeOfDay];
-            let words = Object.values(languages);
+            let words = Object.values(greetings[timeOfDay]);
             let index = 0;
             setInterval(() => {
                 helloText.style.opacity = 0;
@@ -103,10 +143,6 @@
             } else {
                 audio.pause();
             }
-        }
-
-        function setTheme(mode) {
-            document.body.className = mode;
         }
     </script>
 
