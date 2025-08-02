@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>hello a hi erm no</title>
+    <title>Hash Studio something something arono</title>
     <link rel="stylesheet" href="styles.css">
     <script defer src="script.js"></script>
     <style>
@@ -108,13 +108,9 @@
         <h2>Welcome to my Portfolio</h2>
         <p id="current-project" class="glitch-text">Fetching current project...</p>
         
-        <button class="gradient-button" onclick="toggleSound()">Play/Stop Sound</button>
-        <button class="gradient-button" onclick="window.open('https://roblox.com')">Roblox</button>
-        <button class="gradient-button" onclick="window.open('https://discord.com')">Discord Server</button>
         <div id="theme-switcher">
             <button class="gradient-button" onclick="setTheme('light')">Light Mode</button>
             <button class="gradient-button" onclick="setTheme('dark')">Dark Mode</button>
-            <button class="gradient-button" onclick="setTheme('carbon')">Carbon Mode</button>
         </div>
     </div>
 
@@ -124,7 +120,7 @@
             let loadingSubtext = document.getElementById("loading-subtext");
             let percentage = 1;
             let scripts = [
-                "/random_script.js", "/data_loader.js", "/config_fetcher.js", "/api_handler.js", "/main_engine.js", "/user_auth.js", "/graphics_loader.js", "/network_request.js", "/ai_module.js"
+                "/kylvj.js", "/data_loader.js", "/config_fetcher.js", "/api_handler.js", "/main_engine.js", "/user_auth.js", "/graphics_loader.js", "/network_request.js", "/ai_module.js"
             ];
             let interval = setInterval(() => {
                 percentage += 1;
@@ -143,11 +139,10 @@
         });
 
         function setTheme(mode) {
-            document.body.classList.remove("light", "dark", "carbon");
+            document.body.classList.remove("light", "dark");
             document.body.classList.add(mode);
         }
     </script>
 
-    <audio id="bg-music" src="https://drive.google.com/file/d/1_NUwJtYbAU8pLbhaqZ0jSX_Oxilqy2na/view?usp=sharing" loop></audio>
 </body>
 </html>
